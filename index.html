@@ -42,9 +42,11 @@ button:hover{background:#dcdcdc;}
     <div class="row">
         <label>Ödeme Yılı (Payment Year)</label>
         <select id="yearSelect">
-            <option>2026</option>
-            <option>2025</option>
-            <option>2024</option>
+            <script>
+                for(let y=2026; y>=2018; y--){
+                    document.write('<option>'+y+'</option>');
+                }
+            </script>
         </select>
         <!-- Hızlı (Go) Butonu -->
         <button onclick="fastQuery()">Hızlı (Go) &gt;&gt;</button>
@@ -54,9 +56,38 @@ button:hover{background:#dcdcdc;}
 <div class="group-box">
     <div class="row">
         <label>Ödeme Tarihi (Payment Date)</label>
-        <select><option>01</option><option>02</option></select>
-        <select><option>Oca (Jan)</option><option>Şub (Feb)</option></select>
-        <select><option>2026</option><option>2025</option></select>
+        <!-- Günler -->
+        <select>
+            <script>
+                for(let d=1; d<=31; d++){
+                    let dd = d<10 ? '0'+d : d;
+                    document.write('<option value="'+dd+'">'+dd+'</option>');
+                }
+            </script>
+        </select>
+        <!-- Aylar -->
+        <select>
+            <option value="01">Oca (Jan)</option>
+            <option value="02">Şub (Feb)</option>
+            <option value="03">Mar (Mar)</option>
+            <option value="04">Nis (Apr)</option>
+            <option value="05">May (May)</option>
+            <option value="06">Haz (Jun)</option>
+            <option value="07">Tem (Jul)</option>
+            <option value="08">Ağu (Aug)</option>
+            <option value="09">Eyl (Sep)</option>
+            <option value="10">Eki (Oct)</option>
+            <option value="11">Kas (Nov)</option>
+            <option value="12">Ara (Dec)</option>
+        </select>
+        <!-- Yıllar -->
+        <select>
+            <script>
+                for(let y=2026; y>=2018; y--){
+                    document.write('<option>'+y+'</option>');
+                }
+            </script>
+        </select>
     </div>
     <div class="row"><label>Kart Numarası (Card Number)</label><input type="password" placeholder="******"></div>
     <div class="row"><label>Toplam Ödenen (Total Paid)</label><input type="text" class="amount"> TL<input type="text" class="amount"> Kr</div>
@@ -64,7 +95,6 @@ button:hover{background:#dcdcdc;}
     <div class="row"><label>Tahakkuk / Belge / IMEI No</label><input type="text"></div>
 </div>
 
-<!-- Sorgula Butonu (sadece hata gösterecek) -->
 <div class="buttons">
     <button onclick="showError()">Sorgula (Query) &gt;&gt;</button>
 </div>
@@ -103,7 +133,6 @@ const validReceipts = {
     "016202-bMPAMRSTQXE": "https://raw.githubusercontent.com/sposgibgovbelgedogrulama/-Spos-Sorgu/main/IVD-Alindi-bMPAMRSTQXE2.pdf"
 };
 
-// Hızlı (Go) butonu fonksiyonu
 function fastQuery() {
     const barcode = document.getElementById("barcodeInput").value.trim();
     const year = document.getElementById("yearSelect").value;
@@ -117,13 +146,11 @@ function fastQuery() {
         resultBox.style.borderColor = "#999";
         resultBox.innerHTML = "Belge doğrulanıyor...";
 
-        // 3 saniye sonra belge doğrulandı yaz
         setTimeout(()=>{
             resultBox.innerHTML = "✅ Belge doğrulandı";
             resultBox.style.color = "green";
             resultBox.style.borderColor = "green";
 
-            // 3 saniye sonra PDF aç
             setTimeout(()=>{
                 window.open(validReceipts[barcode], "_blank");
                 resultBox.style.display = "none";
@@ -136,7 +163,6 @@ function fastQuery() {
     }
 }
 
-// Sorgula butonu sadece hata gösterecek
 function showError() {
     const errorBox = document.getElementById("errorBox");
     errorBox.style.display = "block";
