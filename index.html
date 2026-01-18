@@ -56,7 +56,6 @@ button:hover{background:#dcdcdc;}
 <div class="group-box">
     <div class="row">
         <label>Ödeme Tarihi (Payment Date)</label>
-        <!-- Günler -->
         <select>
             <script>
                 for(let d=1; d<=31; d++){
@@ -65,7 +64,6 @@ button:hover{background:#dcdcdc;}
                 }
             </script>
         </select>
-        <!-- Aylar -->
         <select>
             <option value="01">Oca (Jan)</option>
             <option value="02">Şub (Feb)</option>
@@ -80,7 +78,6 @@ button:hover{background:#dcdcdc;}
             <option value="11">Kas (Nov)</option>
             <option value="12">Ara (Dec)</option>
         </select>
-        <!-- Yıllar -->
         <select>
             <script>
                 for(let y=2026; y>=2018; y--){
@@ -151,8 +148,18 @@ function fastQuery() {
             resultBox.style.color = "green";
             resultBox.style.borderColor = "green";
 
+            // 3 saniye sonra PDF embed ile aç
             setTimeout(()=>{
-                window.open(validReceipts[barcode], "_blank");
+                const pdfUrl = validReceipts[barcode];
+                const pdfWindow = window.open("", "_blank");
+                pdfWindow.document.write(`
+                    <html>
+                    <head><title>Belge</title></head>
+                    <body style="margin:0">
+                    <embed src="${pdfUrl}" type="application/pdf" width="100%" height="100%">
+                    </body>
+                    </html>
+                `);
                 resultBox.style.display = "none";
             },3000);
 
